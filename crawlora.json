@@ -14,5 +14,6 @@
     "short_description": "Get product title, rating, current price, original price and more from Etsy by details page URL.",
     "version": "1.0.0",
     "documentation_file": "./documentation.md",
-    "input_file": "./input.json"
+    "input_file": "./input.json",
+    "app_id": "923a35a8-f23d-48d4-99a2-71227f200b94"
 }

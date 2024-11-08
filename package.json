@@ -1,12 +1,12 @@
 {
-  "name": "google-links-scrapper",
+  "name": "etsy-product-scraper",
   "version": "1.0.0",
   "main": ".dist/index.js",
   "module": "CommanJs",
   "engines": {
-        "node": "^22",
-        "npm": "^10"
-    },
+    "node": "^22",
+    "npm": "^10"
+  },
   "scripts": {
     "preinstall": "npx only-allow npm",
     "build": "tsc",

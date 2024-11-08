@@ -1,3 +1,3 @@
-import GetGoogleLinks from "./index";
+import etsyScraper from "./index";
 
-GetGoogleLinks({ searches: `crawlora\nscaletech` });
+etsyScraper({ urls: `https://www.etsy.com/listing/1561347771/personalized-gym-bag-for-men-waxed?ref=listing_page_ad_row-6&pro=1&plkey=a480abdaa37666c497b614bc8df54ee4a95c8656%3A1561347771&listing_id=1561347771&listing_slug=personalized-gym-bag-for-men-waxed\nhttps://www.etsy.com/in-en/listing/1813613475/christmas-ornament-kit-holiday-ornament?click_key=6e6bc4047abd0b03f90636f546dc876e1a8c06f1%3A1813613475&click_sum=5b913ad6&ref=gm_gift_idea_related_listings-14&pro=1&sts=1\nhttps://www.etsy.com/in-en/listing/1525873562/personalized-planet-night-lamp-custom?ga_order=most_relevant&ga_search_type=all&ga_view_type=gallery&ga_search_query=lighting&ref=sr_gallery-1-1&pro=1&etp=1&sts=1&ret=1&content_source=366bd6f711f5a544181edc26246a1d0682a570c3%253A1525873562&search_preloaded_img=1&organic_search_click=1` });

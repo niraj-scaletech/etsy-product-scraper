@@ -1,12 +1,12 @@
 [
-    {
-        "type": "textarea",
-        "datatype": "string",
-        "placeholder": "Enter search keywords per line",
-        "default": "crawlora",
-        "label": "Google searchs",
-        "regex": "/^.*$/",
-        "required": true,
-        "name": "searches"
-      }
+  {
+    "type": "textarea",
+    "datatype": "string",
+    "placeholder": "Enter one URL per line",
+    "default": "https://www.etsy.com/listing/1561347771/personalized-gym-bag-for-men-waxed?ref=listing_page_ad_row-6&pro=1&plkey=a480abdaa37666c497b614bc8df54ee4a95c8656%3A1561347771&listing_id=1561347771&listing_slug=personalized-gym-bag-for-men-waxed",
+    "label": "Product Page URLs",
+    "regex": "https?://[^\\s]+",
+    "required": true,
+    "name": "urls"
+  }
 ]

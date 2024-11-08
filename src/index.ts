@@ -1,59 +1,51 @@
-import { apikey, sequence_id, showBrowser } from "./config";
-
+import { sequence_id } from "./config";
 import { browser } from "@crawlora/browser";
 
 export default async function ({
-  searches, // data coming from textarea which means it is multiline
+  urls,
 }: {
-  searches: string;
+  urls: string;
 }) {
+  const formedData = urls.trim().split("\n").map(v => v.trim())
 
-  const formedData = searches.trim().split("\n").map(v => v.trim())
+  for await (const url of formedData) {
+    await browser(async ({ page, wait, output, debug }) => {
+      try {
+        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+        debug(`Navigate to ${url}`)
 
- await browser(async ({page, wait, output, debug }) => {
+        await wait(2);
 
-    for await (const searchs of formedData) {
+        const details = await page.evaluate(() => {
+          const getText = (selector: string) => document.querySelector(selector)?.textContent?.trim() || 'N/A';
 
-      await page.goto("https://google.com");
+          const imageElement: HTMLImageElement[] = Array.from(document.querySelectorAll('.listing-page-image-carousel-component li.wt-mr-xs-1 img')) || [];
+          const images = imageElement.map((element) => element.src).join(', ') || 'N/A'
 
-      debug(`visiting google website`)
-  
-      await wait(2);
-  
-      await page.type('textarea[name="q"]', searchs);
+          return {
+            product_title: getText('h1') || 'N/A',
+            product_rating: (document.querySelector('input[name="rating"]') as HTMLInputElement)?.value || 'N/A',
+            sell_price: getText('div[data-selector="price-only"] p.wt-text-title-larger')?.replace('Price:', '')?.trim(),
+            original_price: getText('div[data-selector="price-only"] .wt-text-strikethrough'),
+            estimated_arrival: getText('[aria-describedby="fulfillment-differentiators-estimated-delivery-date-popover"]'),
+            returns_exchanges: getText('[data-selector="fulfillment-differentiators-content"] div.wt-display-flex-xs.wt-align-items-center:last-child').includes('not accepted') ? 'Not Accepted' : 'Accepted',
+            reviews: getText('.reviews__shop-info h2'),
+            images,
+          }
+        })
 
-      debug(`looking for textarea to type`)
+        await output.create({
+          sequence_id,
+          sequence_output: { ...details, url }
+        })
 
-  
-      await page.keyboard.press("Enter");
+        await wait(2);
+      } catch (error) {
+        const e = error as Error
+        debug(error)
+        throw new Error(e.message);
+      }
+    })
 
-      debug(`pressing enter`)
-
-  
-      await page.waitForNavigation({ waitUntil: ["networkidle2"] });
-
-      debug(`waiting for page navigation`)
-
-  
-      const links = await page.$$eval("a", (anchors) =>
-        anchors.map((anchor) => anchor.href)
-      );
-
-      debug(`fetching links`)
-
-
-      await wait(2);
-
-      debug(`started submitting links`)
-
-      await Promise.all(links.map(async (link) => {
-        await output.create({sequence_id, sequence_output: { [searchs]: link }}) // save data per line
-      }))
-      
-      debug(`submitted links`)
-
-    }
-
-  }, { showBrowser, apikey })
-
+  }
 }
